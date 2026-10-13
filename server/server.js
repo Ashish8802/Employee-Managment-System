@@ -1,0 +1,34 @@
+import express from "express";
+import cors from "cors";
+import "dotenv/config";
+import multer from "multer";
+import connectDB from "./config/db.js";
+import employeeRouter from "./routes/employeeRoutes.js";
+import authRouter from "./routes/authRoutes.js";
+import profileRouter from "./routes/profileRoutes.js";
+import attendanceRouter from "./routes/attendanceRoutes.js";  
+import payslipRouter from "./routes/paySlipsRouter.js";
+import leaveRouter from "./routes/leaveRoutes.js";
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+//Middleware
+app.use(cors());
+app.use(express.json());
+app.use(multer().none());
+
+//Routes
+app.get("/", (req, res) => res.send("Server is running..."));
+app.use("/api/employees", employeeRouter);
+app.use("/api/auth", authRouter);  
+app.use("/api/profile", profileRouter);
+app.use("/api/attendance", attendanceRouter);
+app.use("/api/leave",leaveRouter);
+app.use("/api/payslips",payslipRouter);
+
+
+
+await connectDB();
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
